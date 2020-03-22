@@ -1,6 +1,7 @@
 import math
-import torch
 from random import randint
+
+import torch
 from torch import distributions
 
 character_replacement = dict()

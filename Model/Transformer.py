@@ -1,6 +1,8 @@
-import torch
 import math
+
+import torch
 from torch import nn
+
 from Constants import *
 
 
@@ -20,7 +22,8 @@ class Transformer(nn.Module):
         '''
         super(Transformer, self).__init__()
         self.d_model = d_model
-        self.transformer = nn.Transformer(d_model, num_head, num_e_layer, num_d_layer, ff_dim, drop_out, activation='gelu')
+        self.transformer = nn.Transformer(d_model, num_head, num_e_layer, num_d_layer, ff_dim, drop_out,
+                                          activation='gelu')
         self.decoder_embedder = nn.Embedding(output_dim, d_model)
         self.encoder_embedder = nn.Embedding(input_dim, d_model)
         self.fc1 = nn.Linear(d_model, output_dim)
@@ -34,6 +37,7 @@ class Transformer(nn.Module):
         embedded_trg = self.positional_encoder(self.decoder_embedder(trg) * math.sqrt(self.d_model))
         output = self.transformer.forward(embedded_src, embedded_trg, src_mask, trg_mask)
         return self.softmax(self.fc1(output))
+
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, dropout=0.1, max_len=5000):

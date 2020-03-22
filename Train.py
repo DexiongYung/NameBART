@@ -1,11 +1,13 @@
-import torch
 import os
-import torch.nn as nn
 import string
+
 import pandas as pd
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+
 from Model.Transformer import Transformer
 from Utility.NameDataset import NameDataset
-from torch.utils.data import DataLoader
 from Utility.Noiser import *
 from Utility.Utility import *
 
@@ -17,6 +19,7 @@ ENCODER_CHARS = [c for c in string.printable]
 NUM_ENCODER_CHARS = len(ENCODER_CHARS)
 PRINT_EVERY = 500
 
+
 def train(src: list, trg: list):
     optimizer.zero_grad()
 
@@ -25,13 +28,14 @@ def train(src: list, trg: list):
     loss = 0
 
     for i in range(len(trg) - 1):
-        prob = transformer.forward(src, trg[0:i+1])
+        prob = transformer.forward(src, trg[0:i + 1])
         loss += criterion(prob[i], trg[i + 1])
-    
+
     loss.backward()
     optimizer.step()
 
     return loss
+
 
 def enumerate_train(dl: DataLoader):
     iter = 0
@@ -58,6 +62,6 @@ lr = 0.0005
 optimizer = torch.optim.Adam(transformer.parameters(), lr=lr)
 df = pd.read_csv('Data/first.csv')
 ds = NameDataset(df, 'name')
-dl = DataLoader(ds, batch_size = 1, shuffle=True)
+dl = DataLoader(ds, batch_size=1, shuffle=True)
 
 enumerate_train(dl)

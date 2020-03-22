@@ -1,7 +1,9 @@
-import torch
 import matplotlib.pyplot as plt
+import torch
 from torch import Tensor
+
 from Constants import *
+
 
 def indexTensor(names: list, max_len: int, allowed_chars: list):
     tensor = torch.zeros(max_len, len(names)).type(torch.LongTensor)
@@ -28,6 +30,7 @@ def targetTensor(names: list, max_len: int, allowed_chars: list):
 
             ret[i][j] = index
     return ret.to(DEVICE)
+
 
 def plot_losses(loss: list, x_label: str, y_label: str, folder: str = "Plot", filename: str = "Result"):
     x = list(range(len(loss)))

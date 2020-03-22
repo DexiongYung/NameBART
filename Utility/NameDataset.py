@@ -1,5 +1,6 @@
-from torch.utils.data import Dataset
 import pandas as pd
+from torch.utils.data import Dataset
+
 
 class NameDataset(Dataset):
     def __init__(self, df: pd.DataFrame, col_name: str):
