@@ -53,7 +53,7 @@ def enumerate_train(dl: DataLoader):
             total_loss += total_loss
             total_loss = 0
             plot_losses(all_losses, f"{PRINT_EVERY}th iteration", "Cross Entropy Loss")
-            torch.save({'weights': transformer.state_dict()}, os.path.join("Weights/BART.path.tar"))
+            torch.save({'weights': transformer.state_dict()}, os.path.join("Weights/Bart.path.tar"))
 
 
 transformer = Transformer(NUM_ENCODER_CHARS, NUM_DECODER_CHARS)
