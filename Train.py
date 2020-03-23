@@ -18,7 +18,7 @@ NUM_DECODER_CHARS = len(DECODER_CHARS)
 ENCODER_CHARS = [c for c in string.printable]
 NUM_ENCODER_CHARS = len(ENCODER_CHARS)
 PRINT_EVERY = 500
-
+EPOCHS = 200
 
 def train(src: list, trg: list):
     optimizer.zero_grad()
@@ -42,18 +42,19 @@ def enumerate_train(dl: DataLoader):
     total_loss = 0
     all_losses = []
 
-    for name in dl:
-        iter += 1
-        noised_name = noise_name(name[0], ENCODER_CHARS, len(name[0]) + 2)
-        noised_name_lst = [c for c in noised_name]
-        trg = [SOS] + [c for c in name[0]] + [EOS]
-        total_loss += train(noised_name_lst, name[0]).item()
+    for i in range(EPOCH):
+        for name in dl:
+            iter += 1
+            noised_name = noise_name(name[0], ENCODER_CHARS, len(name[0]) + 2)
+            noised_name_lst = [c for c in noised_name]
+            trg = [SOS] + [c for c in name[0]] + [EOS]
+            total_loss += train(noised_name_lst, name[0]).item()
 
-        if iter % PRINT_EVERY:
-            total_loss += total_loss
-            total_loss = 0
-            plot_losses(all_losses, f"{PRINT_EVERY}th iteration", "Cross Entropy Loss")
-            torch.save({'weights': transformer.state_dict()}, "Weights/Bart.path.tar")
+            if iter % PRINT_EVERY:
+                total_loss += total_loss
+                total_loss = 0
+                plot_losses(all_losses, f"{PRINT_EVERY}th iteration", "Cross Entropy Loss")
+                torch.save({'weights': transformer.state_dict()}, "Weights/Bart.path.tar")
 
 
 transformer = Transformer(NUM_ENCODER_CHARS, NUM_DECODER_CHARS)
