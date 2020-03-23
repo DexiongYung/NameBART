@@ -1,6 +1,6 @@
 import os
 import string
-
+import argparse
 import pandas as pd
 import torch
 import torch.nn as nn
@@ -11,14 +11,21 @@ from Utility.NameDataset import NameDataset
 from Utility.Noiser import *
 from Utility.Utility import *
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--continue_training', nargs='?', default=1, type=int)
+
+args = parser.parse_args()
+
+
 SOS = 'SOS'
 EOS = 'EOS'
 DECODER_CHARS = [c for c in string.ascii_letters] + ['\'', '-', EOS, SOS]
 NUM_DECODER_CHARS = len(DECODER_CHARS)
 ENCODER_CHARS = [c for c in string.printable]
 NUM_ENCODER_CHARS = len(ENCODER_CHARS)
+CONTINUE_TRAINING = args.continue_training == 1
 PRINT_EVERY = 500
-EPOCHS = 200
+EPOCH = 200
 
 def train(src: list, trg: list):
     optimizer.zero_grad()
@@ -64,5 +71,8 @@ optimizer = torch.optim.Adam(transformer.parameters(), lr=lr)
 df = pd.read_csv('Data/first.csv')
 ds = NameDataset(df, 'name')
 dl = DataLoader(ds, batch_size=1, shuffle=True)
+
+if CONTINUE_TRAINING:
+    transformer.load_state_dict(torch.load('Weights/Bart.path.tar')['weights'])
 
 enumerate_train(dl)
