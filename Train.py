@@ -24,7 +24,7 @@ NUM_DECODER_CHARS = len(DECODER_CHARS)
 ENCODER_CHARS = [c for c in string.printable]
 NUM_ENCODER_CHARS = len(ENCODER_CHARS)
 CONTINUE_TRAINING = args.continue_training == 1
-PRINT_EVERY = 500
+PRINT_EVERY = 100
 EPOCH = 200
 
 def train(src: list, trg: list):
@@ -60,7 +60,7 @@ def enumerate_train(dl: DataLoader):
             if iter % PRINT_EVERY:
                 total_loss += total_loss
                 total_loss = 0
-                plot_losses(all_losses, f"{PRINT_EVERY}th iteration", "Cross Entropy Loss")
+                plot_losses(all_losses, f"Iteration of {PRINT_EVERY}", "Cross Entropy Loss")
                 torch.save({'weights': transformer.state_dict()}, "Weights/Bart.path.tar")
 
 
