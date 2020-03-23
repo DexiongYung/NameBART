@@ -5,6 +5,7 @@ from torch.utils.data import Dataset
 class NameDataset(Dataset):
     def __init__(self, df: pd.DataFrame, col_name: str):
         self.data_frame = df[col_name]
+        self.data_frame.dropna()
 
     def __len__(self):
         return len(self.data_frame)
