@@ -12,7 +12,7 @@ from Utility.Noiser import *
 from Utility.Utility import *
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--continue_training', nargs='?', default=1, type=int)
+parser.add_argument('--continue_training', nargs='?', default=0, type=int)
 
 args = parser.parse_args()
 
@@ -58,7 +58,7 @@ def enumerate_train(dl: DataLoader):
             total_loss += train(noised_name_lst, name[0]).item()
 
             if iter % PRINT_EVERY:
-                total_loss += total_loss
+                all_losses.append(total_loss / PRINT_EVERY)
                 total_loss = 0
                 plot_losses(all_losses, f"Iteration of {PRINT_EVERY}", "Cross Entropy Loss")
                 torch.save({'weights': transformer.state_dict()}, "Weights/Bart.path.tar")
